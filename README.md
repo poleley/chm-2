@@ -4,6 +4,12 @@
 
 **Важно:** перед отправкой коммита "причесать код". Сделать это можно, например, с помощью Before commit
 
+<details><summary>Screenshot</summary>
+
+<img width="529" alt="Screenshot 2021-10-30 at 00 04 45" src="https://user-images.githubusercontent.com/56041257/139474897-d0cae5c0-0802-4852-81ec-5397b62fbb60.png">
+
+</details>
+
 ## Полезные ссылки:
 
 - [Документация по итерационным методам из методички]()
