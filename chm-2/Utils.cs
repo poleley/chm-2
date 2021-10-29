@@ -31,13 +31,10 @@ namespace chm_2
                 .Trim();
 
             var size = int.Parse(ln);
-            
+
             var diags = new double[7][];
 
-            for (int i = 0; i < 7; i++)
-            {
-                diags[i] = ReadDoubles(file);
-            }
+            for (var i = 0; i < 7; i++) diags[i] = ReadDoubles(file);
 
             var shifts = ReadInts(file);
             return new Matrix(diags, shifts, size);

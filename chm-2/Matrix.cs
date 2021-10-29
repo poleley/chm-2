@@ -14,15 +14,12 @@ namespace chm_2
             Shifts = Array.Empty<int>();
             Size = 0;
         }
-        
+
         public Matrix(double[][] diags, int[] shifts, int size)
         {
             Diags = diags;
             Shifts = shifts;
             Size = size;
         }
-        
-        
-
     }
 }
