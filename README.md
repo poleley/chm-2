@@ -1,5 +1,7 @@
 # ЛАБОРАТОРНАЯ РАБОТА №2 ПО ЧМ
 
+[![Project](https://img.shields.io/badge/Project-View-yellowgreen)](https://github.com/poleley/chm-2/projects/1) 
+
 **Важно:** перед отправкой коммита "причесать код". Сделать это можно, например, с помощью Before commit
 
 ## Полезные ссылки:
