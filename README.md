@@ -1,4 +1,4 @@
-# ЛАБОРАТОРНАЯ РАБОТА №2 ПО ЧМ
+# ЛАБОРАТОРНАЯ РАБОТА №2 ПО ЧМ (Вариант 2)
 
 [![Project](https://img.shields.io/badge/Project-View-yellowgreen)](https://github.com/poleley/chm-2/projects/1) 
 
