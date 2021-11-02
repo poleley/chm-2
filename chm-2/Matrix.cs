@@ -21,5 +21,18 @@ namespace chm_2
             Shifts = shifts;
             Size = size;
         }
+
+        public double this[int i, int j] => GetElement(i, j);
+
+        private double GetElement(int i, int j)
+        {
+            var shift = j - i;
+            for (var k = 0; k < Shifts.Length; k++)
+            {
+                if (shift != Shifts[k]) continue;
+                return shift > 0 ? Diags[k][i] : Diags[k][j];
+            }
+            return 0.0;
+        }
     }
 }
