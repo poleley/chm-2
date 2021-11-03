@@ -6,4 +6,8 @@
         <RootNamespace>chm_2</RootNamespace>
     </PropertyGroup>
 
+    <ItemGroup>
+        <Compile Remove="MethodsTest.cs"/>
+    </ItemGroup>
+
 </Project>

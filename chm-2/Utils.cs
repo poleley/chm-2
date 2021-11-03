@@ -1,11 +1,10 @@
 ﻿using System;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 
 namespace chm_2
 {
-    public class Utils
+    public static class Utils
     {
         public static double[] ReadDoubles(StreamReader file)
         {
@@ -33,7 +32,7 @@ namespace chm_2
                 .Select(int.Parse)
                 .ToArray();
         }
-        
+
         public static int ReadInt(StreamReader file)
         {
             var ln = file.ReadLine()!
@@ -47,9 +46,11 @@ namespace chm_2
         {
             var size = ReadInt(file);
 
-            var diags = new double[7][];
+            var diagsSize = ReadInt(file);
 
-            for (var i = 0; i < 7; i++)
+            var diags = new double[diagsSize][];
+
+            for (var i = 0; i < diagsSize; i++)
             {
                 diags[i] = ReadDoubles(file);
             }
@@ -57,15 +58,16 @@ namespace chm_2
             var shifts = ReadInts(file);
             return new Matrix(diags, shifts, size);
         }
-        
+
         public static void Pprint(Matrix matrix)
         {
-            for (int i = 0; i < matrix.Size; i++)
+            for (var i = 0; i < matrix.Size; i++)
             {
-                for (int j = 0; j < matrix.Size; j++)
+                for (var j = 0; j < matrix.Size; j++)
                 {
-                    Console.Write($"{matrix[i,j]} ");
+                    Console.Write($"{matrix[i, j]} ");
                 }
+
                 Console.WriteLine();
             }
         }
