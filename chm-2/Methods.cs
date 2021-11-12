@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace chm_2
+﻿namespace chm_2
 {
     public static class Methods
     {
@@ -17,22 +15,32 @@ namespace chm_2
             return LinAlg.Norm(diff) / LinAlg.Norm(f);
         }
 
-        public static double[] Iterate(double[] x, Matrix matrixA, double w, double[] f, int a)
+        public static double[] Iterate(
+            double[] x,
+            double[] xNext,
+            Matrix matrixA,
+            double w,
+            double[] f
+        )
         {
-            var xNext = new double[x.Length];
-            var sum = 0.0;
             for (var i = 0; i < x.Length; i++)
             {
-                for (var j = 0; j < i - 1; j++)
+                var s1 = 0.0;
+                var s2 = 0.0;
+
+                for (var j = 0; j <= i - 1; j++)
                 {
-                    sum += matrixA[i, j] * xNext[j];
+                    s1 += matrixA[i, j] * xNext[j];
                 }
-                xNext[i] = x[i] + w *
-                    (f[i] - a * sum - LinAlg.Inner(matrixA, x)[i]) / matrixA[i, i];
-                Console.Write($"{xNext[i]} ");
+
+                for (var j = i; j < x.Length; j++)
+                {
+                    s2 += matrixA[i, j] * x[j];
+                }
+
+                xNext[i] = x[i] + w * (f[i] - s1 - s2) / matrixA[i, i];
             }
-            Console.WriteLine();
-            
+
             return xNext;
         }
     }
