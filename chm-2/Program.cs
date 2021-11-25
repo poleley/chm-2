@@ -3,33 +3,45 @@ using System.IO;
 
 namespace chm_2;
 
-using static System.Math;
+using static Math;
 
 internal class Program
 {
     private static void Main(string[] args)
     {
         var inputFile = new StreamReader("input.txt");
-        var matrixA = Utils.MatrixFromFile(inputFile);
-        var x = Utils.VectorFromFile(inputFile);
-        var xNext = new double[x.Length];
+
+        var matrix = Utils.MatrixFromFile(inputFile);
+        var xGS = Utils.VectorFromFile(inputFile);
+
         var f = Utils.VectorFromFile(inputFile);
+
         var w = Utils.ReadDouble(inputFile);
+
         var maxIterations = Utils.ReadInt(inputFile);
         var eps = Utils.ReadDouble(inputFile);
-        var diffEps = eps / 206.0;
-        Utils.Pprint(matrixA);
-        Utils.Pprint(f);
+        var diffEps = eps / 200.0;
+
+        var xJacobi = new double[xGS.Length];
+        xGS.AsSpan().CopyTo(xJacobi);
+
+        var xNextGS = new double[xGS.Length];
+
+        Console.ForegroundColor = ConsoleColor.Red;
+
+        for (int i = 0; i < matrix.N; i++)
+        {
+            Console.WriteLine($"TEST: {LinAlg.GSLowScalarProd(i, matrix, f) + LinAlg.GSUpScalarProd(i, matrix, f)}");
+        }
+
+        Console.ResetColor();
 
         Console.WriteLine();
-
-        var xNew = new double[x.Length];
-        x.AsSpan().CopyTo(xNew);
 
         // Here is Gauss-Seidel method
         for (var i = 0; i < maxIterations; i++)
         {
-            var residual = Methods.RelativeResidual(matrixA, x, f);
+            var residual = Methods.RelativeResidual(matrix, xGS, f);
 
             if (Abs(residual - eps) < diffEps)
             {
@@ -37,29 +49,32 @@ internal class Program
             }
 
             Console.WriteLine($"Iteration: {i + 1} Residual: {residual} ");
-            x = Methods.Iterate(x, xNext, matrixA, w, f);
+            xNextGS.AsSpan().Fill(0.0);
+            xGS = Methods.Iterate(xGS, xNextGS, matrix, w, f);
         }
 
         Console.WriteLine("Result by GS:");
-        Utils.Pprint(x);
+        Utils.Pprint(xGS);
         Console.WriteLine();
 
         // Here is Jacobi method
         for (var i = 0; i < maxIterations; i++)
         {
-            var residual = Methods.RelativeResidual(matrixA, xNew, f);
+            var residual = Methods.RelativeResidual(matrix, xJacobi, f);
 
             if (Abs(residual - eps) < diffEps)
             {
-                Console.WriteLine($"abs:{Abs(residual - eps)}");
                 break;
             }
 
             Console.WriteLine($"Iteration: {i + 1} Residual: {residual} ");
-            xNew = Methods.Iterate(xNew, xNew, matrixA, w, f);
+            xJacobi = Methods.Iterate(xJacobi, xJacobi, matrix, w, f);
         }
 
         Console.WriteLine("Result by Jacobi:");
-        Utils.Pprint(xNew);
+        Utils.Pprint(xJacobi);
+
+        // Utils.SaveToCSV(CSVName);
+        // Utils.SaveToFile(OutputFile);
     }
 }
