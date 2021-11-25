@@ -23,7 +23,7 @@ public abstract class Methods
             var lowSum = LinAlg.GSLowScalarProd(i, matrix, xNext);
             var upSum = LinAlg.GSUpScalarProd(i, matrix, x);
 
-            xNext[i] = x[i] - w * (f[i] - lowSum - upSum) / matrix.Diag[i];
+            xNext[i] = x[i] + w * (f[i] - lowSum - upSum) / matrix.Diag[i];
         }
 
         return xNext;

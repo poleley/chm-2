@@ -3,8 +3,6 @@ using System.IO;
 
 namespace chm_2;
 
-using static Math;
-
 internal class Program
 {
     private static void Main(string[] args)
@@ -25,7 +23,7 @@ internal class Program
         var xJacobi = new double[xGS.Length];
         xGS.AsSpan().CopyTo(xJacobi);
 
-        var xNextGS = new double[xGS.Length];
+        //var xNextGS = new double[xGS.Length];
 
         Console.ForegroundColor = ConsoleColor.Red;
 
@@ -43,13 +41,13 @@ internal class Program
         {
             var residual = Methods.RelativeResidual(matrix, xGS, f);
 
-            if (Abs(residual - eps) < diffEps)
+            if (residual < eps)
             {
                 break;
             }
 
             Console.WriteLine($"Iteration: {i + 1} Residual: {residual} ");
-            xNextGS.AsSpan().Fill(0.0);
+            var xNextGS = new double[xGS.Length];
             xGS = Methods.Iterate(xGS, xNextGS, matrix, w, f);
         }
 
@@ -62,7 +60,7 @@ internal class Program
         {
             var residual = Methods.RelativeResidual(matrix, xJacobi, f);
 
-            if (Abs(residual - eps) < diffEps)
+            if (residual < eps)
             {
                 break;
             }
