@@ -1,4 +1,6 @@
-﻿namespace chm_2;
+﻿using System;
+
+namespace chm_2;
 
 public abstract class Methods
 {
@@ -16,16 +18,31 @@ public abstract class Methods
         return LinAlg.Norm(diff) / LinAlg.Norm(f);
     }
 
-    public static double[] Iterate(double[] x, double[] xNext, Matrix matrix, double w, double[] f)
+    public static double[] IterateGS(double[] x, Matrix matrix, double w, double[] f)
     {
         for (var i = 0; i < x.Length; i++)
         {
-            var lowSum = LinAlg.GSLowScalarProd(i, matrix, xNext);
-            var upSum = LinAlg.GSUpScalarProd(i, matrix, x);
+            var sum = LinAlg.ScalarProd(i, matrix, x);
 
-            xNext[i] = x[i] + w * (f[i] - lowSum - upSum) / matrix.Diag[i];
+            x[i] += w * (f[i] - sum) / matrix.Diag[i];
         }
 
-        return xNext;
+        return x;
+    }
+
+    public static double[] IterateJacoby(double[] x, Matrix matrix, double w, double[] f)
+    {
+        var xNext = new double[x.Length];
+
+        for (var i = 0; i < x.Length; i++)
+        {
+            var sum = LinAlg.ScalarProd(i, matrix, x);
+
+            xNext[i] = x[i] + w * (f[i] - sum) / matrix.Diag[i];
+        }
+
+        xNext.AsSpan().CopyTo(x);
+
+        return x;
     }
 }

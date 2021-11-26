@@ -23,18 +23,7 @@ internal class Program
         var xJacobi = new double[xGS.Length];
         xGS.AsSpan().CopyTo(xJacobi);
 
-        //var xNextGS = new double[xGS.Length];
-
-        Console.ForegroundColor = ConsoleColor.Red;
-
-        for (int i = 0; i < matrix.N; i++)
-        {
-            Console.WriteLine($"TEST: {LinAlg.GSLowScalarProd(i, matrix, f) + LinAlg.GSUpScalarProd(i, matrix, f)}");
-        }
-
-        Console.ResetColor();
-
-        Console.WriteLine();
+        var xNextGS = new double[xGS.Length];
 
         // Here is Gauss-Seidel method
         for (var i = 0; i < maxIterations; i++)
@@ -43,12 +32,12 @@ internal class Program
 
             if (residual < eps)
             {
+                Console.WriteLine($"Last Iteration: {i + 1} Residual: {residual} ");
                 break;
             }
 
-            Console.WriteLine($"Iteration: {i + 1} Residual: {residual} ");
-            var xNextGS = new double[xGS.Length];
-            xGS = Methods.Iterate(xGS, xNextGS, matrix, w, f);
+            // Console.WriteLine($"Iteration: {i + 1} Residual: {residual} ");
+            xGS = Methods.IterateGS(xGS, matrix, w, f);
         }
 
         Console.WriteLine("Result by GS:");
@@ -62,11 +51,12 @@ internal class Program
 
             if (residual < eps)
             {
+                Console.WriteLine($"Last Iteration: {i + 1} Residual: {residual} ");
                 break;
             }
 
-            Console.WriteLine($"Iteration: {i + 1} Residual: {residual} ");
-            xJacobi = Methods.Iterate(xJacobi, xJacobi, matrix, w, f);
+            // Console.WriteLine($"Iteration: {i + 1} Residual: {residual} ");
+            xJacobi = Methods.IterateJacoby(xJacobi, matrix, w, f);
         }
 
         Console.WriteLine("Result by Jacobi:");
