@@ -1,12 +1,14 @@
-﻿namespace chm_2;
+﻿using System;
 
-public static class Methods
+namespace chm_2;
+
+public abstract class Methods
 {
-    public static double RelativeResidual(Matrix matrixA, double[] x, double[] f)
+    public static double RelativeResidual(Matrix matrix, double[] x, double[] f)
     {
         var diff = new double[f.Length];
 
-        var innerProd = LinAlg.Inner(matrixA, x);
+        var innerProd = LinAlg.MatMul(matrix, x);
 
         for (var i = 0; i < f.Length; i++)
         {
@@ -16,32 +18,31 @@ public static class Methods
         return LinAlg.Norm(diff) / LinAlg.Norm(f);
     }
 
-    public static double[] Iterate(
-        double[] x,
-        double[] xNext,
-        Matrix matrixA,
-        double w,
-        double[] f
-    )
+    public static double[] IterateGS(double[] x, Matrix matrix, double w, double[] f)
     {
         for (var i = 0; i < x.Length; i++)
         {
-            var s1 = 0.0;
-            var s2 = 0.0;
+            var sum = LinAlg.ScalarProd(i, matrix, x);
 
-            for (var j = 0; j <= i - 1; j++)
-            {
-                s1 += matrixA[i, j] * xNext[j];
-            }
-
-            for (var j = i; j < x.Length; j++)
-            {
-                s2 += matrixA[i, j] * x[j];
-            }
-
-            xNext[i] = x[i] + w * (f[i] - s1 - s2) / matrixA[i, i];
+            x[i] += w * (f[i] - sum) / matrix.Diag[i];
         }
 
-        return xNext;
+        return x;
+    }
+
+    public static double[] IterateJacoby(double[] x, Matrix matrix, double w, double[] f)
+    {
+        var xNext = new double[x.Length];
+
+        for (var i = 0; i < x.Length; i++)
+        {
+            var sum = LinAlg.ScalarProd(i, matrix, x);
+
+            xNext[i] = x[i] + w * (f[i] - sum) / matrix.Diag[i];
+        }
+
+        xNext.AsSpan().CopyTo(x);
+
+        return x;
     }
 }

@@ -30,37 +30,30 @@ public static class Utils
 
     public static int ReadInt(StreamReader file) => int.Parse(file.ReadLine()!.Trim(' '));
 
-
     public static double[] VectorFromFile(StreamReader file) => ReadDoubles(file);
 
     public static Matrix MatrixFromFile(StreamReader file)
     {
-        var size = ReadInt(file);
+        var n = ReadInt(file);
+        var m = ReadInt(file);
 
-        var diagsSize = ReadInt(file);
+        var upperPart = new double[3][];
 
-        var diags = new double[diagsSize][];
-
-        for (var i = 0; i < diagsSize; i++)
+        for (var i = 0; i < 3; i++)
         {
-            diags[i] = ReadDoubles(file);
+            upperPart[i] = ReadDoubles(file);
         }
 
-        var shifts = ReadInts(file);
-        return new Matrix(diags, shifts, size);
-    }
+        var diag = ReadDoubles(file);
 
-    public static void Pprint(Matrix matrix)
-    {
-        for (var i = 0; i < matrix.Size; i++)
+        var lowPart = new double[3][];
+
+        for (var i = 0; i < 3; i++)
         {
-            for (var j = 0; j < matrix.Size; j++)
-            {
-                Console.Write($"{matrix[i, j]} ");
-            }
-
-            Console.WriteLine();
+            lowPart[i] = ReadDoubles(file);
         }
+
+        return new Matrix(n, m, diag, upperPart, lowPart);
     }
 
     public static void Pprint(double[] vector)

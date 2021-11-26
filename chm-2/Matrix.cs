@@ -1,45 +1,28 @@
-﻿using System;
-
-namespace chm_2;
+﻿namespace chm_2;
 
 public class Matrix
 {
-    public readonly double[][] Diags;
-    private readonly int DiagsSize;
-    public readonly int[] Shifts;
-    public readonly int Size;
+    public readonly double[] Diag;
+
+    public readonly double[][] LowPart = new double[3][];
+
+    public readonly int M;
+    public readonly int N;
+
+    public readonly double[][] UpperPart = new double[3][];
 
     public Matrix()
     {
-        DiagsSize = 7;
-        Diags = new double[DiagsSize][];
-        Shifts = Array.Empty<int>();
-        Size = 0;
+        M = 0;
+        N = 0;
     }
 
-    public Matrix(double[][] diags, int[] shifts, int size)
+    public Matrix(int n, int m, double[] diag, double[][] upperPart, double[][] lowPart)
     {
-        Diags = diags;
-        Shifts = shifts;
-        Size = size;
-    }
-
-    public double this[int i, int j] => GetElement(i, j);
-
-    private double GetElement(int i, int j)
-    {
-        var shift = j - i;
-
-        for (var k = 0; k < Shifts.Length; k++)
-        {
-            if (shift != Shifts[k])
-            {
-                continue;
-            }
-
-            return shift > 0 ? Diags[k][i] : Diags[k][j];
-        }
-
-        return 0.0;
+        N = n;
+        M = m;
+        Diag = diag;
+        UpperPart = upperPart;
+        LowPart = lowPart;
     }
 }
