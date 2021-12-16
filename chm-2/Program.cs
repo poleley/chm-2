@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 
 namespace chm_2;
@@ -25,6 +26,8 @@ internal class Program
 
         var xNextGS = new double[xGS.Length];
 
+        var time = Stopwatch.StartNew();
+
         // Here is Gauss-Seidel method
         for (var i = 0; i < maxIterations; i++)
         {
@@ -40,7 +43,8 @@ internal class Program
             xGS = Methods.IterateGS(xGS, matrix, w, f);
         }
 
-        Console.WriteLine("Result by GS:");
+        time.Stop();
+        Console.WriteLine($"Result GS (Done by {time.ElapsedMilliseconds} ms.)");
         Utils.Pprint(xGS);
         Console.WriteLine();
 

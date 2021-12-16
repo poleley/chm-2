@@ -60,7 +60,7 @@ public static class Utils
     {
         foreach (var t in vector)
         {
-            Console.Write($"{t} ");
+            Console.WriteLine($"{t} ");
         }
     }
 }
